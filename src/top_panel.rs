@@ -5,9 +5,9 @@ use bevy::{
 
 use bevy_egui::*;
 
-pub(crate) struct Panels;
+pub(crate) struct TopPanel;
 
-impl Plugin for Panels {
+impl Plugin for TopPanel {
     fn build(
         &self,
         app: &mut App

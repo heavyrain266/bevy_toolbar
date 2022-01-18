@@ -15,7 +15,7 @@ impl PluginGroup for ToolbarPlugin {
 		group: &mut PluginGroupBuilder
 	) {
 		group
-            .add(Panels)
+            .add(TopPanel)
             .add(BottomPanel)
             .add(EguiPlugin);
 	}
