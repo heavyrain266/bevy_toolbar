@@ -1,5 +1,9 @@
 use bevy::{
     prelude::*,
+    diagnostic::{
+        Diagnostics,
+        FrameTimeDiagnosticsPlugin
+    }
 };
 
 use bevy_egui::*;
@@ -17,6 +21,8 @@ impl Plugin for BottomPanel {
 
 pub(self) fn bottom_panel(
     egui: Res<EguiContext>,
+    msaa: Res<Msaa>,
+    diag: Res<Diagnostics>,
     mut windows: ResMut<Windows>
 ) {
     let prime = windows
@@ -28,6 +34,12 @@ pub(self) fn bottom_panel(
             ui.horizontal(|ui| {
                 ui.label(format!("Title: {}", prime.title()));
                 ui.label(format!("Vsync: {}", prime.vsync()));
+                if let Some(fps) = diag.get(FrameTimeDiagnosticsPlugin::FPS) {
+                    if let Some(average) = fps.average() {
+                        ui.label(format!("FPS: {:.2}", average));
+                    }
+                }
+                ui.label(format!("Msaa: {:?}x", msaa.samples));
                 ui.label(format!("Mode: {:?}", prime.mode()));
                 ui.label(format!("Size: {}", prime.width()) + "x" + &format!("{}", prime.height()) + "px");
         });

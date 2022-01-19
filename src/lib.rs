@@ -1,7 +1,11 @@
 mod top_panel;
 mod bottom_panel;
 
-use bevy::app::*;
+use bevy::{
+    app::*,
+    diagnostic::*
+};
+
 use bevy_egui::*;
 
 use crate::top_panel::*;
@@ -17,6 +21,7 @@ impl PluginGroup for ToolbarPlugin {
 		group
             .add(TopPanel)
             .add(BottomPanel)
-            .add(EguiPlugin);
+            .add(EguiPlugin)
+            .add(FrameTimeDiagnosticsPlugin);
 	}
 }
