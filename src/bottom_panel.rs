@@ -26,8 +26,8 @@ pub(self) fn bottom_panel(
     mut windows: ResMut<Windows>
 ) {
     let prime = windows
-    .get_primary_mut()
-    .unwrap();
+        .get_primary_mut()
+        .unwrap();
 
     egui::TopBottomPanel::bottom("Window state")
         .show(egui.ctx(), |ui| {

@@ -11,9 +11,9 @@ use bevy_egui::*;
 use crate::top_panel::*;
 use crate::bottom_panel::*;
 
-pub struct ToolbarPlugin;
+pub struct ToolbarPlugins;
 
-impl PluginGroup for ToolbarPlugin {
+impl PluginGroup for ToolbarPlugins {
 	fn build(
 		&mut self,
 		group: &mut PluginGroupBuilder
