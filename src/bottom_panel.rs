@@ -25,12 +25,14 @@ pub(self) fn bottom_panel(
 
     egui::TopBottomPanel::bottom("Window state").show(egui.ctx(), |ui| {
         ui.horizontal(|ui| {
-            ui.label("Title:");
-            ui.spacing_mut().text_edit_width = 160.;
-            ui.text_edit_singleline(&mut settings.title);
+            if settings.setting_toggles.title {
+                ui.label("Title:");
+                ui.spacing_mut().text_edit_width = 160.;
+                ui.text_edit_singleline(&mut settings.title);
 
-            if prime.title().ne(&settings.title){
-                prime.set_title(settings.title.clone());
+                if prime.title().ne(&settings.title) {
+                    prime.set_title(settings.title.clone());
+                }
             }
 
             if settings.setting_toggles.fps {

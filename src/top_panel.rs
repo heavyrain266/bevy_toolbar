@@ -26,6 +26,7 @@ pub struct SettingToggles {
     resolution: bool,
     window_mode: bool,
     vsync: bool,
+    pub title: bool,
     pub fps: bool,
     pub ft: bool,
 }
@@ -50,6 +51,7 @@ impl Default for ToolbarSettings {
                 resolution: true,
                 window_mode: true,
                 vsync: true,
+                title: true,
                 fps: true,
                 ft: true,
             },
@@ -126,6 +128,7 @@ pub(self) fn top_panel(
                 let _res = ui.checkbox(&mut settings.setting_toggles.resolution, "Resolution");
                 let _res = ui.checkbox(&mut settings.setting_toggles.vsync, "VSync");
                 let _res = ui.checkbox(&mut settings.setting_toggles.msaa, "Msaa");
+                let _res = ui.checkbox(&mut settings.setting_toggles.title, "Title");
                 let _res = ui.checkbox(&mut settings.setting_toggles.fps, "Fps");
                 let _res = ui.checkbox(&mut settings.setting_toggles.ft, "Frame Time");
             });
@@ -163,7 +166,7 @@ pub(self) fn top_panel(
 
             if settings.setting_toggles.vsync {
                 ui.menu_button(
-                    format!("Vsync: {}", if prime.vsync() { "On" } else { "Off" }),
+                    format!("VSync: {}", if prime.vsync() { "On" } else { "Off" }),
                     |ui| {
                         if ui.button("Off").clicked() {
                             prime.set_vsync(false);
