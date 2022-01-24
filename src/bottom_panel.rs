@@ -1,47 +1,46 @@
 use bevy::{
+    diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
     prelude::*,
-    diagnostic::{
-        Diagnostics,
-        FrameTimeDiagnosticsPlugin
-    }
 };
 
 use bevy_egui::*;
 
+use crate::top_panel::ToolbarSettings;
+
 pub(crate) struct BottomPanel;
 
 impl Plugin for BottomPanel {
-    fn build(
-        &self,
-        app: &mut App
-    ) {
+    fn build(&self, app: &mut App) {
         app.add_system(bottom_panel);
     }
 }
 
 pub(self) fn bottom_panel(
     egui: Res<EguiContext>,
-    msaa: Res<Msaa>,
     diag: Res<Diagnostics>,
-    mut windows: ResMut<Windows>
+    mut windows: ResMut<Windows>,
+    settings: Res<ToolbarSettings>,
 ) {
-    let prime = windows
-        .get_primary_mut()
-        .unwrap();
+    let prime = windows.get_primary_mut().unwrap();
 
-    egui::TopBottomPanel::bottom("Window state")
-        .show(egui.ctx(), |ui| {
-            ui.horizontal(|ui| {
-                ui.label(format!("Title: {}", prime.title()));
-                ui.label(format!("Vsync: {}", prime.vsync()));
+    egui::TopBottomPanel::bottom("Window state").show(egui.ctx(), |ui| {
+        ui.horizontal(|ui| {
+            ui.label(format!("Title: {}", prime.title()));
+
+            if settings.setting_toggles.fps {
                 if let Some(fps) = diag.get(FrameTimeDiagnosticsPlugin::FPS) {
                     if let Some(average) = fps.average() {
                         ui.label(format!("FPS: {:.2}", average));
                     }
                 }
-                ui.label(format!("Msaa: {:?}x", msaa.samples));
-                ui.label(format!("Mode: {:?}", prime.mode()));
-                ui.label(format!("Size: {}", prime.width()) + "x" + &format!("{}", prime.height()) + "px");
+            }
+            if settings.setting_toggles.ft {
+                if let Some(fps) = diag.get(FrameTimeDiagnosticsPlugin::FRAME_TIME) {
+                    if let Some(average) = fps.average() {
+                        ui.label(format!("Frame Time: {:.2}ms", average * 1000.));
+                    }
+                }
+            }
         });
     });
 }
