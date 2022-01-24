@@ -18,6 +18,7 @@ pub struct ToolbarSettings {
     current_window_size: WindowSize,
     window_sizes: Vec<WindowSize>,
     pub setting_toggles: SettingToggles,
+    pub title: String,
 }
 
 pub struct SettingToggles {
@@ -43,6 +44,7 @@ impl std::fmt::Display for WindowSize {
 impl Default for ToolbarSettings {
     fn default() -> Self {
         Self {
+            title: "bevy".to_string(),
             setting_toggles: SettingToggles {
                 msaa: true,
                 resolution: true,

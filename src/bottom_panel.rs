@@ -19,13 +19,19 @@ pub(self) fn bottom_panel(
     egui: Res<EguiContext>,
     diag: Res<Diagnostics>,
     mut windows: ResMut<Windows>,
-    settings: Res<ToolbarSettings>,
+    mut settings: ResMut<ToolbarSettings>,
 ) {
     let prime = windows.get_primary_mut().unwrap();
 
     egui::TopBottomPanel::bottom("Window state").show(egui.ctx(), |ui| {
         ui.horizontal(|ui| {
-            ui.label(format!("Title: {}", prime.title()));
+            ui.label("Title:");
+            ui.spacing_mut().text_edit_width = 160.;
+            ui.text_edit_singleline(&mut settings.title);
+
+            if prime.title().ne(&settings.title){
+                prime.set_title(settings.title.clone());
+            }
 
             if settings.setting_toggles.fps {
                 if let Some(fps) = diag.get(FrameTimeDiagnosticsPlugin::FPS) {
