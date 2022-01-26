@@ -111,6 +111,7 @@ fn get_startup_resolution(mut windows: ResMut<Windows>, mut settings: ResMut<Too
     let prime = windows.get_primary_mut().unwrap();
     settings.current_window_size.width = prime.requested_width();
     settings.current_window_size.height = prime.requested_height();
+    settings.title = prime.title().to_string();
 }
 
 pub(self) fn top_panel(
