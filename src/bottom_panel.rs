@@ -22,6 +22,7 @@ pub(self) fn bottom_panel(
     mut settings: ResMut<ToolbarSettings>,
 ) {
     let prime = windows.get_primary_mut().unwrap();
+
     egui::TopBottomPanel::bottom("Window state").show(egui.ctx(), |ui| {
         ui.horizontal(|ui| {
             if settings.setting_toggles.title {
