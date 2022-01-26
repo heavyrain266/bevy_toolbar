@@ -1,12 +1,16 @@
-mod bottom_panel;
 mod top_panel;
+mod bottom_panel;
+mod shared_settings;
 
-use bevy::{app::*, diagnostic::*};
+use bevy::{
+    app::*,
+    diagnostic::*
+};
 
 use bevy_egui::*;
 
-use crate::bottom_panel::*;
 use crate::top_panel::*;
+use crate::bottom_panel::*;
 
 pub struct ToolbarPlugins;
 

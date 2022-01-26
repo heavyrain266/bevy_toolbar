@@ -1,13 +1,12 @@
-use bevy::{
-    diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
-    prelude::*,
-};
+use crate::shared_settings::*;
 
+use bevy::{
+    prelude::*,
+    diagnostic::*
+};
 use bevy_egui::*;
 
-use crate::top_panel::ToolbarSettings;
-
-pub(crate) struct BottomPanel;
+pub struct BottomPanel;
 
 impl Plugin for BottomPanel {
     fn build(&self, app: &mut App) {
@@ -15,40 +14,44 @@ impl Plugin for BottomPanel {
     }
 }
 
-pub(self) fn bottom_panel(
+pub fn bottom_panel(
     egui: Res<EguiContext>,
     diag: Res<Diagnostics>,
     mut windows: ResMut<Windows>,
     mut settings: ResMut<ToolbarSettings>,
 ) {
-    let prime = windows.get_primary_mut().unwrap();
+    let window = windows
+        .get_primary_mut()
+        .unwrap();
 
-    egui::TopBottomPanel::bottom("Window state").show(egui.ctx(), |ui| {
-        ui.horizontal(|ui| {
-            if settings.setting_toggles.title {
-                ui.label("Title:");
-                ui.spacing_mut().text_edit_width = 160.;
-                ui.text_edit_singleline(&mut settings.title);
+    egui::TopBottomPanel::bottom("Window state")
+        .show(egui.ctx(), |ui| {
+            ui.horizontal(|ui| {
+                if settings.option.title {
+                    ui.label("Title:");
+                    ui.spacing_mut().text_edit_width = 160.0;
+                    ui.text_edit_singleline(&mut settings.title);
 
-                if prime.title().ne(&settings.title) {
-                    prime.set_title(settings.title.clone());
-                }
-            }
-
-            if settings.setting_toggles.fps {
-                if let Some(fps) = diag.get(FrameTimeDiagnosticsPlugin::FPS) {
-                    if let Some(average) = fps.average() {
-                        ui.label(format!("FPS: {:.2}", average));
+                    if window.title().ne(&settings.title) {
+                        window.set_title(settings.title.clone());
                     }
                 }
-            }
-            if settings.setting_toggles.ft {
-                if let Some(fps) = diag.get(FrameTimeDiagnosticsPlugin::FRAME_TIME) {
-                    if let Some(average) = fps.average() {
-                        ui.label(format!("Frame Time: {:.2}ms", average * 1000.));
+
+                if settings.option.fps {
+                    if let Some(fps) = diag.get(FrameTimeDiagnosticsPlugin::FPS) {
+                        if let Some(average) = fps.average() {
+                            ui.label(format!("FPS: {:.2}", average));
+                        }
                     }
                 }
-            }
+
+                if settings.option.ft {
+                    if let Some(ft) = diag.get(FrameTimeDiagnosticsPlugin::FRAME_TIME) {
+                        if let Some(average) = ft.average() {
+                            ui.label(format!("Frame Time: {:.2}ms", average * 1000.0));
+                        }
+                    }
+                }
+            });
         });
-    });
-}
+    }
