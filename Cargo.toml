@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-bevy = "0.6"
 bevy_egui = "0.10"
 strum = "0.17.1"
 strum_macros = "0.17.1"
+
+[dependencies.bevy]
+version = "0.6"
+default-features = false
