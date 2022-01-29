@@ -1,9 +1,10 @@
-use crate::shared_settings::*;
+use super::settings::ToolbarSettings;
 
 use bevy::{
     prelude::*,
     window::WindowMode
 };
+
 use bevy_egui::*;
 
 use strum_macros::EnumIter;
@@ -38,9 +39,7 @@ fn get_startup_resolution(
 
     settings.current_window_size.width = window.requested_width();
     settings.current_window_size.height = window.requested_height();
-    settings.title = window
-        .title()
-        .into();
+    settings.title = window.title().into();
 }
 
 pub fn top_panel(
@@ -57,30 +56,16 @@ pub fn top_panel(
         .show(egui.ctx(), |ui| {
             ui.horizontal(|ui| {
                 ui.menu_button("Settings", |ui| {
-                    ui.checkbox(&mut settings.option.window_mode, "Window Mode");
-                    ui.checkbox(&mut settings.option.resolution, "Resolution");
-                    ui.checkbox(&mut settings.option.vsync, "VSync");
-                    ui.checkbox(&mut settings.option.msaa, "Msaa");
-                    ui.checkbox(&mut settings.option.title, "Title");
-                    ui.checkbox(&mut settings.option.fps, "Fps");
+                    ui.checkbox(&mut settings.option.window_title, "Window title");
+                    ui.checkbox(&mut settings.option.window_size, "Window size");
+                    ui.checkbox(&mut settings.option.window_mode, "Window mode");
+                    ui.checkbox(&mut settings.option.vsync, "V-Sync");
+                    ui.checkbox(&mut settings.option.msaa, "MSAA");
                     ui.checkbox(&mut settings.option.ft, "Frame Time");
+                    ui.checkbox(&mut settings.option.fps, "Frames Per Second");
                 });
 
-                if settings.option.window_mode {
-                    ui.menu_button(format!("Mode: {:?}", window.mode()), |ui| {
-                        if ui.button("Toggle Decorations").clicked() {
-                            window.set_decorations(!window.decorations());
-                        } else if ui.button("Windowed").clicked() {
-                            window.set_mode(WindowMode::Windowed);
-                        } else if ui.button("Fullscreen").clicked() {
-                            window.set_mode(WindowMode::Fullscreen);
-                        } else if ui.button("Borderless").clicked() {
-                            window.set_mode(WindowMode::BorderlessFullscreen);
-                        }
-                    });
-                }
-
-                if settings.option.resolution {
+                if settings.option.window_size {
                     ui.menu_button(
                         format!(
                             "Size: {width}x{height}px",
@@ -95,6 +80,20 @@ pub fn top_panel(
                             }
                         },
                     );
+                }
+
+                if settings.option.window_mode {
+                    ui.menu_button(format!("Mode: {:?}", window.mode()), |ui| {
+                        if ui.button("Toggle Decorations").clicked() {
+                            window.set_decorations(!window.decorations());
+                        } else if ui.button("Windowed").clicked() {
+                            window.set_mode(WindowMode::Windowed);
+                        } else if ui.button("Fullscreen").clicked() {
+                            window.set_mode(WindowMode::Fullscreen);
+                        } else if ui.button("Borderless").clicked() {
+                            window.set_mode(WindowMode::BorderlessFullscreen);
+                        }
+                    });
                 }
 
                 if settings.option.vsync {
@@ -112,7 +111,7 @@ pub fn top_panel(
 
                 if settings.option.msaa {
                     ui.menu_button(
-                        format!("Msaa: {}",
+                        format!("MSAA: {}",
                             if msaa.samples.eq(&1) {
                                 "Off".to_string()
                             } else {
@@ -120,9 +119,9 @@ pub fn top_panel(
                             }
                         ),
                     |ui| {
-                        for mssa_option in MsaaSettings::iter() {
-                            if ui.button(format!("{:?}", mssa_option)).clicked() {
-                                msaa.samples = mssa_option as u32;
+                        for msaa_option in MsaaSettings::iter() {
+                            if ui.button(format!("{:?}", msaa_option)).clicked() {
+                                msaa.samples = msaa_option as u32;
                             }
                         }
                     },

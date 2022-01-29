@@ -1,9 +1,9 @@
 pub struct OptionToggle {
     pub msaa: bool,
-    pub resolution: bool,
+    pub window_title: bool,
+    pub window_size: bool,
     pub window_mode: bool,
     pub vsync: bool,
-    pub title: bool,
     pub fps: bool,
     pub ft: bool,
 }
@@ -34,13 +34,13 @@ impl Default for ToolbarSettings {
                 width: 800.0,
                 height: 800.0,
             },
-            // Make options disabled by default
+            // Make all options disabled by default
             option: OptionToggle {
-                msaa: false,
-                resolution: false,
+                window_title: false,
+                window_size: false,
                 window_mode: false,
                 vsync: false,
-                title: false,
+                msaa: false,
                 fps: false,
                 ft: false,
             },
