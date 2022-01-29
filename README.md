@@ -1,23 +1,31 @@
 # Bevy Toolbar
 
-## Usage:
-This is starter for your own game-specific tools, clone source and manually add it to `[workspace]` section in `Cargo.toml`.
+Toolbar plugin for [Bevy Engine](https://github.com/bevyengine/bevy), created to provide set of tools and utils which can be expanded for your own needs.
 
-Now add it to `src/main.rs` and files in `bevy_toolbar` folder to your needs.
+Crate itself is designed to be installed manually, fork this repo and fetch source, add `bevy_toolbar` to your workspace in `Cargo.toml`, then start adding new features related to your game.
 
-```diff
+### Installation
+Remember to add `ToolbarPlugins` after `DefaultPlugins` because toolbar will not show up and most likely crash your game on startup.
+```rs
 use bevy::prelude::*;
-+ use bevy_toolbar::*;
+use bevy_toolbar::ToolbarPlugins;
 
+/*
+This will create empty window with two panels,
+one on top and second on the bottom.
+
+Click "Settings" button to enable selected tools.
+*/
 fn main() {
-   App::new()
-       .add_plugins(DefaultPlugins)
-+      .add_plugins(ToolbarPlugins)
-       .run();
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_plugins(ToolbarPlugins)
+        .run();
 }
 ```
 
-When you open game, two panels should be rendered on top and the bottom. Top panel contains buttons which opens menus with tools, bottom panel show useful window informations like current title, vsync status, fps, window state and more.
+## Contributing
+Feel free to open Pull Request(s) with new tools or integrations with other plugins.
 
 ## License
-bevy_toolbar is relased as Public Domain library see [LICENSE](LICENSE).
+bevy_toolbar is released as Public Domain library see [LICENSE](LICENSE).
