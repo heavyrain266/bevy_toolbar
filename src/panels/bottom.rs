@@ -5,6 +5,7 @@ use bevy::{
     diagnostic::*
 };
 use bevy_egui::*;
+
 pub struct BottomPanel;
 
 impl Plugin for BottomPanel {
