@@ -3,11 +3,11 @@ name = "bevy_toolbar"
 version = "0.2.0"
 edition = "2021"
 
-[dependencies]
-bevy_egui = "0.11.1"
-strum = "0.23.0"
-strum_macros = "0.23.1"
-
 [dependencies.bevy]
-git = "https://github.com/bevyengine/bevy.git"
+version = "0.7"
 default-features = false
+
+[dependencies]
+bevy_egui = "0.14.0"
+strum = "0.24.0"
+strum_macros = "0.24.0"

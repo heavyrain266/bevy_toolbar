@@ -1,43 +1,50 @@
-use super::settings::ToolbarSettings;
+use {
+	bevy::{
+		prelude::{
+			Res, ResMut, App, Plugin
+		},
+		window::Windows,
+		diagnostic::{
+			Diagnostics, FrameTimeDiagnosticsPlugin
+		},
+	},
+	bevy_egui::{egui, EguiContext},
 
-use bevy::{
-    prelude::*,
-    diagnostic::*
+	super::options::Options,
 };
-use bevy_egui::*;
 
 pub struct BottomPanel;
 
 impl Plugin for BottomPanel {
-    fn build(&self, app: &mut App) {
-        app.add_system(bottom_panel);
-    }
+	fn build(&self, app: &mut App) {
+		app.add_system(bottom_panel);
+	}
 }
 
-pub fn bottom_panel(
-    egui: Res<EguiContext>,
-    diag: Res<Diagnostics>,
-    mut windows: ResMut<Windows>,
-    mut settings: ResMut<ToolbarSettings>,
+fn bottom_panel(
+	diag: Res<Diagnostics>,
+	mut egui: ResMut<EguiContext>,
+	mut windows: ResMut<Windows>,
+	mut options: ResMut<Options>,
 ) {
-    let window = windows
-        .get_primary_mut()
-        .unwrap();
+	let window = windows
+		.get_primary_mut()
+		.expect("Cannot get primary window");
 
-    egui::TopBottomPanel::bottom("Window state")
-        .show(egui.ctx(), |ui| {
+	    egui::TopBottomPanel::bottom("Window state")
+        .show(egui.ctx_mut(), |ui| {
             ui.horizontal(|ui| {
-                if settings.option.window_title {
+                if options.toggle.window_title {
                     ui.label("Title:");
                     ui.spacing_mut().text_edit_width = 160.0;
-                    ui.text_edit_singleline(&mut settings.title);
+                    ui.text_edit_singleline(&mut options.title);
 
-                    if window.title().ne(&settings.title) {
-                        window.set_title(settings.title.clone());
+                    if window.title() != (&options.title) {
+                        window.set_title(options.title.clone());
                     }
                 }
 
-                if settings.option.ft {
+                if options.toggle.frame_time {
                     if let Some(ft) = diag.get(FrameTimeDiagnosticsPlugin::FRAME_TIME) {
                         if let Some(average) = ft.average() {
                             ui.label(format!("FT: {:.2}ms", average * 1000.0));
@@ -45,7 +52,7 @@ pub fn bottom_panel(
                     }
                 }
 
-                if settings.option.fps {
+                if options.toggle.fps {
                     if let Some(fps) = diag.get(FrameTimeDiagnosticsPlugin::FPS) {
                         if let Some(average) = fps.average() {
                             ui.label(format!("FPS: {:.2}", average));
@@ -54,4 +61,4 @@ pub fn bottom_panel(
                 }
             });
         });
-    }
+}
